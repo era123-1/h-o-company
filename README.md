@@ -28,8 +28,8 @@ Built with **React** (frontend) and **PHP/MySQL** (backend), it emphasizes respo
 ## 📂 Project Structure
 
 api/ → PHP REST API
-public/ → Static/public files
-src/ → React app (components, pages, hooks, context, styles)
+public/ → React public folder (index.html, manifest.json, robots.txt, sitemap)
+src/ → React app (components, pages, features, hooks, context, styles)
 
 ---
 
