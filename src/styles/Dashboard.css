@@ -1,0 +1,173 @@
+.dashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f7fc;
+  }
+  
+  /* Heading */
+  .dashboard h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  /* Key statistics section */
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+  }
+  
+  .stat-card {
+    background-color:rgb(139, 111, 16);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex: 1;
+    margin: 0 10px;
+  }
+  
+  .stat-card h2 {
+    color: #f0e8e8;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .stat-card p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #022503;
+  }
+  
+  /* User management section */
+  .user-management {
+    margin-bottom: 30px;
+  }
+  
+  .user-management h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .user-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .user-card p {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .user-card button {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .user-card button:hover {
+    background-color: #d32f2f;
+  }
+  
+  /* Notifications section */
+  .notifications {
+    margin-bottom: 30px;
+  }
+  
+  .notifications h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .notification-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+  }
+  
+  .notification-card p {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  /* Policies section */
+  .policies {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .policies h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .policies p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .policies textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    resize: none;
+  }
+  
+  .policies button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .policies button:hover {
+    background-color: #388e3c;
+  }
+  @media (max-width: 768px) {
+    .stats {
+      flex-direction: column;
+      align-items: center; 
+    }
+  
+    .stat-card {
+      width: 80%; 
+      margin-bottom: 20px;
+    }
+  
+    .stat-card h2 {
+      font-size: 16px;
+    }
+  
+    .stat-card p {
+      font-size: 20px;
+    }
+  }

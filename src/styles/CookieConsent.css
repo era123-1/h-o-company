@@ -1,0 +1,156 @@
+/* Cookie Consent  */
+ .cookie-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;       
+  width: 92%;
+  max-width: 860px;
+  background: #1f2937; 
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  color: #f9fafb;
+  padding: 28px 36px;
+  z-index: 1000;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  animation: slideUp 0.5s ease forwards;
+}
+
+.cookie-banner p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #e5e7eb;
+  font-weight: 400;
+}
+.cookie-options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cookie-options div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+.cookie-options input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  appearance: none;
+  border: 2px solid #facc15;
+  border-radius: 5px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.cookie-options input[type="checkbox"]:checked {
+  background-color: #facc15;
+  border-color: #facc15;
+}
+
+.cookie-options input[type="checkbox"]:checked::after {
+  content: "✔";
+  color: #111827;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  transform: translate(-50%, -50%);
+}
+
+.cookie-banner label {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.cookie-banner label:hover {
+  color: #facc15;
+}
+
+.cookie-banner-button {
+  display: flex;
+  justify-content: center; 
+  gap: 16px;
+}
+
+.cookie-banner-button button {
+  padding: 12px 26px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-width: 150px;
+  border: none;
+}
+.cookie-banner-button button:first-child {
+  background-color: transparent;
+  border: 2px solid #facc15;
+  color: #facc15;
+}
+
+.cookie-banner-button button:first-child:hover {
+  background-color: #facc15;
+  color: #111827;
+  box-shadow: 0 4px 12px rgba(250, 204, 21, 0.4);
+  transform: translateY(-2px);
+}
+
+.cookie-banner-button button:last-child {
+  background-color: #facc15;
+  color: #111827;
+  box-shadow: 0 4px 14px rgba(250, 204, 21, 0.45);
+}
+
+.cookie-banner-button button:last-child:hover {
+  background-color: #eab308;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(250, 204, 21, 0.55);
+}
+
+.cookie-banner button:disabled {
+  background-color: #9ca3af;
+  border: none;
+  cursor: not-allowed;
+  color: #374151;
+  box-shadow: none;
+}
+@media (max-width: 768px) {
+  .cookie-banner {
+    bottom: 12px;
+    padding: 20px;
+    font-size: 14px;
+  }
+
+  .cookie-banner-button {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .cookie-banner-button button {
+    width: 100%;
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+}

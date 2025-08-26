@@ -1,0 +1,90 @@
+.features {
+    padding: 50px;
+    background-color: #f4f4f4;
+}
+
+.features-header h1 {
+    font-size: 2.5rem;
+    color: #333;
+    text-align: center;
+}
+
+.features-header p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 40px; 
+    margin-top: 30px;
+    grid-template-areas: 
+        "feature1 feature2" 
+        "feature3 feature3"; 
+}
+
+.feature {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+    outline: none;
+    border-bottom: 2px solid rgb(59, 63, 3);
+    margin-bottom: 40px;
+}
+
+.feature:nth-child(1) {
+    grid-area: feature1; 
+}
+
+.feature:nth-child(2) {
+    grid-area: feature2; 
+}
+
+.feature:nth-child(3) {
+    grid-area: feature3; 
+}
+
+.feature img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.feature h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-top: 15px;
+}
+
+.feature p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr; 
+        grid-template-areas: 
+            "feature1"
+            "feature2"
+            "feature3"; 
+        gap: 30px;
+    }
+
+    .feature {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+}

@@ -1,0 +1,4 @@
+
+User-agent: *
+Disallow:
+Sitemap: https://hocompany.website/sitemap.xml
