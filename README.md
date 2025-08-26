@@ -1,19 +1,21 @@
 # H&O Company
 
-H&O Company is a modern construction service platform offering fully integrated solutions for residential and commercial projects.  
-Built with **React** and **PHP/MySQL**, the application emphasizes responsive design, clean UI, and seamless client interaction,  
-including job application tracking, payment management, and real-time notifications.
+H&O Company is a modern construction service platform for residential and commercial projects.  
+Built with **React** (frontend) and **PHP/MySQL** (backend), it emphasizes responsive design, clean UI, and seamless user interactions.
 
-## Technologies Used
+👉 [Live Demo](https://hocompany.website/)
 
-- React & React Router
-- React Scroll, Bootstrap 5, Font Awesome
-- Axios, js-cookie, date-fns
-- React Big Calendar
-- Google OAuth Authentication
-- PHP (REST API), MySQL
+---
 
-## Features
+## 🚀 Technologies
+
+- Frontend: React, React Router, Bootstrap 5, Font Awesome, Axios
+- Backend: PHP (REST API), MySQL
+- Integrations: Google OAuth, PayPal, Formspree, React Big Calendar
+
+---
+
+## ✨ Features
 
 - User registration & Google login
 - Job application submission and tracking
@@ -21,6 +23,21 @@ including job application tracking, payment management, and real-time notificati
 - Calendar scheduling
 - Payment management
 
-## Demo
+---
 
-👉 [Live Demo](https://hocompany.website/)
+## 📂 Project Structure
+
+api/ → PHP REST API
+public/ → Static/public files
+src/ → React app (components, pages, hooks, context, styles)
+
+yaml
+Copy
+Edit
+
+---
+
+## 📌 Notes
+
+- Sensitive configuration files are not included.
+- This repository highlights the **project structure and logic** for review.
