@@ -31,10 +31,6 @@ api/ → PHP REST API
 public/ → Static/public files
 src/ → React app (components, pages, hooks, context, styles)
 
-yaml
-Copy
-Edit
-
 ---
 
 ## 📌 Notes
