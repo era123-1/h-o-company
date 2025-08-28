@@ -17,7 +17,6 @@ const EventCalendar = () => {
   });
   const [showForm, setShowForm] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedEventDetails, setSelectedEventDetails] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,15 +25,14 @@ const EventCalendar = () => {
         const response = await fetch(
           "http://localhost/kompani-ndertimi/api/calendar.php"
         );
-        const formattedEvents = await response.json();
-        setEvents(
-          formattedEvents.map((event) => ({
-            title: event.title,
-            start: new Date(event.start),
-            end: new Date(event.end),
-            description: event.description,
-          }))
-        );
+        const data = await response.json();
+        const formattedEvents = data.map((event) => ({
+          title: event.title,
+          start: new Date(event.start),
+          end: new Date(event.end),
+          description: event.description,
+        }));
+        setEvents(formattedEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -65,8 +63,8 @@ const EventCalendar = () => {
       );
       const result = await response.json();
       if (result.success) {
-        setEvents([
-          ...events,
+        setEvents((prev) => [
+          ...prev,
           {
             ...newEvent,
             start: new Date(newEvent.start),
@@ -87,14 +85,6 @@ const EventCalendar = () => {
     navigate("/");
   };
 
-  const handleSelectSlot = (slotInfo) => {
-    const selectedDateEvents = events.filter((event) => {
-      return moment(event.start).isSame(slotInfo.start, "day");
-    });
-    setSelectedEventDetails(selectedDateEvents);
-    setCurrentDate(slotInfo.start);
-  };
-
   const goToPreviousMonth = () => {
     setCurrentDate(moment(currentDate).subtract(1, "months").toDate());
   };
@@ -103,18 +93,22 @@ const EventCalendar = () => {
     setCurrentDate(moment(currentDate).add(1, "months").toDate());
   };
 
-  const handleEventClick = (event) => {
-    setSelectedEventDetails(event);
-  };
   const handleNavigate = (newDate) => {
-    setCurrentDate(newDate); 
+    setCurrentDate(newDate);
   };
+
+  const eventsForCurrentMonth = events.filter((event) =>
+    moment(event.start).isSame(currentDate, "month")
+  );
+
   return (
     <div className="event-calendar-container">
-      <h1>Event Calendar</h1>
-      <button className="back-button" onClick={handleBackClick}>
-        Back
-      </button>
+      <div className="calendar-header">
+        <h1>📅 Event Calendar</h1>
+        <button className="back-button" onClick={handleBackClick}>
+          Back
+        </button>
+      </div>
 
       <div className="custom-calendar-header">
         <button className="nav-button" onClick={goToPreviousMonth}>
@@ -131,7 +125,7 @@ const EventCalendar = () => {
       {showForm && (
         <div className="modal">
           <form className="event-form" onSubmit={handleSubmit}>
-            <h2>Add Event</h2>
+            <h2>Add New Event</h2>
             <label>
               Event Title
               <input
@@ -142,6 +136,7 @@ const EventCalendar = () => {
                 required
               />
             </label>
+
             <label>
               Start Time
               <input
@@ -152,6 +147,7 @@ const EventCalendar = () => {
                 required
               />
             </label>
+
             <label>
               End Time
               <input
@@ -162,67 +158,66 @@ const EventCalendar = () => {
                 required
               />
             </label>
+
             <label>
-              Event Description
+              Description
               <textarea
                 name="description"
                 value={newEvent.description}
                 onChange={handleInputChange}
-              ></textarea>
+              />
             </label>
-            <button type="submit">Add Event</button>
-            <button type="button" onClick={() => setShowForm(false)}>
-              Cancel
-            </button>
+
+            <div className="form-buttons">
+              <button type="submit">Add Event</button>
+              <button type="button" onClick={() => setShowForm(false)}>
+                Cancel
+              </button>
+            </div>
           </form>
         </div>
       )}
 
       <Calendar
         localizer={localizer}
-        events={events}
+        events={[]} 
         startAccessor="start"
         endAccessor="end"
         date={currentDate}
         onNavigate={handleNavigate}
-        onSelectSlot={handleSelectSlot}
-        onSelectEvent={handleEventClick}
         toolbar={false}
-        style={{ height: 500, marginTop: "20px" }}
-        selectable={true}
-        views={["month", "week", "day"]}
+        style={{ height: 500, width: "100%" }}
+        selectable={false} 
+        views={["month"]}
         defaultView="month"
+        components={{
+          event: () => null, 
+        }}
       />
+
       <button className="add-event-button" onClick={() => setShowForm(true)}>
         Add Event
       </button>
-      {/* Displaying events for the relevant date*/}
-      {selectedEventDetails && selectedEventDetails.length > 0 && (
-        <div className="events-for-date">
-          <h2>Events on {moment(currentDate).format("MMMM Do YYYY")}</h2>
-          <ul>
-            {selectedEventDetails.map((event, index) => (
-              <li key={index}>
-                <p>
-                  <strong>{event.title}</strong>
-                </p>
-                <p>{event.description}</p>
-                <p>
-                  {moment(event.start).format("h:mm A")} -{" "}
-                  {moment(event.end).format("h:mm A")}
-                </p>
+
+      <div className="events-for-month">
+        <h2>Events in {moment(currentDate).format("MMMM YYYY")}</h2>
+        {eventsForCurrentMonth.length > 0 ? (
+          <ul className="event-list">
+            {eventsForCurrentMonth.map((event, index) => (
+              <li key={index} className="event-item">
+                <div className="event-title">{event.title}</div>
+                <div className="event-description">{event.description}</div>
+                <div className="event-time">
+                  {moment(event.start).format("MMM Do, h:mm A")} -{" "}
+                  {moment(event.end).format("MMM Do, h:mm A")}
+                </div>
               </li>
             ))}
           </ul>
-        </div>
-      )}
-
-      {/* If there are no events for the date */}
-      {selectedEventDetails && selectedEventDetails.length === 0 && (
-        <div className="no-events">
-          <p>No events for this date.</p>
-        </div>
-      )}
+        ) : (
+          <p className="no-events">No events for this month.</p>
+        )}
+      </div>
     </div>
   );
 };
