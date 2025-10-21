@@ -4,13 +4,13 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCKFaezN7PQoDXKV1PN3WVaq75uOuL_IPM",
-    authDomain: "kompani-ndertimi.firebaseapp.com",
-    projectId: "kompani-ndertimi",
-    storageBucket: "kompani-ndertimi.appspot.com",
-    messagingSenderId: "127617797229",
-    appId: "1:127617797229:web:17e6945be1b8eaa4fac364",
-    measurementId: "G-6RHJ4HWPK6"
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
 };
 
 // Initialize Firebase
@@ -49,7 +49,7 @@ export const getFirebaseToken = async () => {
         if (!registration) return null;
 
         const token = await getToken(messaging, {
-            vapidKey: "BPACC6VbKln6M4nqTSOvrsWg6H6aRkOWCjSivQqfAtGsT0aaygiBEpO0wDx1j0k5qlvCis9QH2y-tTmmPGM_3yo",
+            vapidKey: "",
             serviceWorkerRegistration: registration
         });
 
