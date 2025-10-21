@@ -14,7 +14,7 @@ const Payments = () => {
 
   const savePaymentToBackend = useCallback(
     (paymentData) => {
-      fetch("http://localhost/kompani-ndertimi/api/payments.php", {
+      fetch("https://hocompany1.com/api/payments.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +80,7 @@ const Payments = () => {
     if (selectedMethod === "paypal" && !paypalScriptLoaded) {
       const script = document.createElement("script");
       script.src =
-      script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.REACT_APP_PAYPAL_CLIENT_ID}&currency=${process.env.REACT_APP_PAYPAL_CURRENCY}`;
+        script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.REACT_APP_PAYPAL_CLIENT_ID}&currency=${process.env.REACT_APP_PAYPAL_CURRENCY}`;
       script.onload = () => {
         setPaypalScriptLoaded(true);
       };

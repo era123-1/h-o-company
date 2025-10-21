@@ -8,7 +8,7 @@ function ApplicationsList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost/kompani-ndertimi/api/get-application.php")
+    fetch("https://hocompany1.com/api/get-application.php")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -53,9 +53,8 @@ function ApplicationsList() {
   const handleSendEmail = () => {
     if (selectedApp) {
       const emailBody = `Hello,\n\nI have received the application of ${selectedApp.name} for the position of ${selectedApp.jobTitle}.\n\nYou can contact them at the email address: ${selectedApp.email}\n\nThank you!`;
-      const mailtoLink = `mailto:?subject=Application for ${
-        selectedApp.jobTitle
-      }&body=${encodeURIComponent(emailBody)}`;
+      const mailtoLink = `mailto:?subject=Application for ${selectedApp.jobTitle
+        }&body=${encodeURIComponent(emailBody)}`;
       window.location.href = mailtoLink;
     }
   };
@@ -94,7 +93,7 @@ function ApplicationsList() {
                     cursor: "pointer",
                     backgroundColor:
                       selectedApp?.id === app.id ? "#e0f7fa" : "white",
-                  }} 
+                  }}
                 >
                   <td>
                     <input
@@ -108,7 +107,7 @@ function ApplicationsList() {
                   <td>{app.email}</td>
                   <td>
                     <a
-                      href={`http://localhost/kompani-ndertimi/api/uploads/${encodeURIComponent(
+                      href={`https://hocompany1.com/api/uploads/${encodeURIComponent(
                         app.resume.split("/").pop()
                       )}`}
                       target="_blank"

@@ -1,4 +1,3 @@
-/* PartnersCarousel */
 import React, { useEffect, useRef } from "react";
 import image1p from "../../assets/images/image1p.png";
 import image2p from "../../assets/images/image2p.png";
@@ -6,6 +5,7 @@ import image3p from "../../assets/images/image3p.png";
 import image4p from "../../assets/images/image4p.png";
 import image5p from "../../assets/images/image5p.png";
 import image6p from "../../assets/images/image6p.png";
+
 const images = [
   { src: image1p, alt: "Partner 1" },
   { src: image2p, alt: "Partner 2" },
@@ -23,20 +23,19 @@ const PartnersCarousel = () => {
     let scrollPos = 0;
 
     const scroll = () => {
-      scrollPos += 1; 
-      if (scrollPos >= container.scrollWidth / 2) {
-        scrollPos = 0;
-      }
+      scrollPos += 1; // control speed
+      if (scrollPos >= container.scrollWidth / 2) scrollPos = 0;
       container.scrollLeft = scrollPos;
       requestAnimationFrame(scroll);
     };
 
-    requestAnimationFrame(scroll);
+    const animationId = requestAnimationFrame(scroll);
+
+    return () => cancelAnimationFrame(animationId); // cleanup
   }, []);
 
   return (
     <section className="partners-section">
-      <h2>Our Partners</h2>
       <div className="partners-container-wrapper" ref={containerRef}>
         <div className="partners-container">
           {images.concat(images).map((img, index) => (

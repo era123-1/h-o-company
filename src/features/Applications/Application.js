@@ -4,7 +4,10 @@ import { useLocation, Link } from "react-router-dom";
 import "../../styles/Application.css";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { useLanguage } from "../../context/LanguageContext";
+
 function Application() {
+  const { t } = useLanguage();
   const location = useLocation();
   const jobTitle = location.state?.jobTitle || "Job Title";
   const { user } = useContext(AuthContext);
@@ -16,6 +19,7 @@ function Application() {
   const [error, setError] = useState("");
 
   const resumeInputRef = useRef(null);
+
   useEffect(() => {
     if (user?.email) setEmail(user.email);
   }, [user]);
@@ -25,7 +29,7 @@ function Application() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+      setError(t("invalidEmail") || "Please enter a valid email address.");
       return;
     }
 
@@ -36,25 +40,25 @@ function Application() {
     formData.append("resume", resume);
     formData.append("jobTitle", jobTitle);
 
-    fetch("http://localhost/kompani-ndertimi/api/save-application.php", {
+    fetch("https://hocompany1.com/api/save-application.php", {
       method: "POST",
       body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setMessage(data.message || "Application submitted successfully!");
+          setMessage(data.message || t("applicationSuccess"));
           setModalVisible(true);
           setName("");
           setResume(null);
           if (resumeInputRef.current) resumeInputRef.current.value = "";
         } else {
-          setError(data.message || "Something went wrong.");
+          setError(data.message || t("somethingWrong"));
         }
       })
       .catch((err) => {
         console.error("Error:", err);
-        setError("An error occurred. Please try again later.");
+        setError(t("serverError"));
       });
   };
 
@@ -63,11 +67,11 @@ function Application() {
       <Header />
       <div className="application-form">
         <h2>
-          Applying for: <strong>{jobTitle}</strong>
+          {t("applyingFor")}: <strong>{jobTitle}</strong>
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Name:</label>
+            <label>{t("name")}:</label>
             <input
               type="text"
               value={name}
@@ -77,12 +81,12 @@ function Application() {
           </div>
 
           <div className="form-group">
-            <label>Email:</label>
+            <label>{t("email")}:</label>
             <input type="email" value={email} readOnly />
           </div>
 
           <div className="form-group">
-            <label>Resume:</label>
+            <label>{t("resume")}:</label>
             <input
               type="file"
               ref={resumeInputRef}
@@ -94,7 +98,7 @@ function Application() {
 
           {error && <div className="error">{error}</div>}
 
-          <button type="submit">Submit Application</button>
+          <button type="submit">{t("submitApplication")}</button>
         </form>
       </div>
 
@@ -104,7 +108,7 @@ function Application() {
             <span className="close" onClick={() => setModalVisible(false)}>
               &times;
             </span>
-            <h2>Form Submitted!</h2>
+            <h2>{t("formSubmitted")}</h2>
             <i
               className="fas fa-check-circle"
               style={{ color: "green", fontSize: "35px" }}
@@ -115,7 +119,7 @@ function Application() {
       )}
 
       {user?.email === "erahidaj@gmail.com" && (
-        <Link to="/applications">See Applications</Link>
+        <Link to="/applications">{t("seeApplications")}</Link>
       )}
       <Footer />
     </div>
@@ -123,3 +127,7 @@ function Application() {
 }
 
 export default Application;
+
+
+
+

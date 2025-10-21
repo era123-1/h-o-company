@@ -1,341 +1,366 @@
-/* Event Calendar Container */
+:root {
+  --color-primary: #1e293b;
+  --color-primary-dark: #0f172a;
+  --color-accent: #d4af37;
+  --color-accent-dark: #b08d29;
+  --color-success: #16a34a;
+  --color-success-dark: #15803d;
+  --color-danger: #dc2626;
+  --color-danger-dark: #991b1b;
+  --color-bg: #f8fafc;
+  --color-white: #ffffff;
+  --color-gray-light: #f1f5f9;
+  --color-gray-lighter: #f9fafb;
+  --color-gray: #d1d5db;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-today: #d4af37;
+  --border-radius: 12px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --transition-fast: 0.2s ease-in-out;
+  --transition-medium: 0.3s ease-in-out;
+  --font-family-base: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --shadow-heavy: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ======================== Container ======================== */
 .event-calendar-container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 30px;
   max-width: 1200px;
-  border-radius: 12px;
-  font-family: 'Poppins', sans-serif;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  width: 95%;
+  font-family: var(--font-family-base);
+  color: var(--color-text);
 }
 
-.event-calendar-container h1 {
-  text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-/* Calendar Header */
-.custom-calendar-header {
+/* ======================== Header ======================== */
+.calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #494c50;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
-
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
 }
 
-.current-month {
-  flex-grow: 1;
-  text-align: center;
-  font-size: 16px;
-  letter-spacing: 1px;
+.calendar-header h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-primary);
 }
 
-.nav-button {
-  background: white;
-  color: #FACC15;
-  border: 2px solid #FACC15;
-  padding: 10px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease;
-  width: 150px;
-}
-
-.nav-button:hover {
-  background: #FACC15;
-  color: white;
-  border-color: #FACC15;
-  transform: scale(1.05);
-}
-
-/* Calendar Styles */
-.rbc-calendar {
-  border: none;
-}
-.rbc-button-link:hover {
-  background-color: #FACC15;
-}
-.rbc-button-link {
-  width: 50px;
-}
-
-.rbc-header {
-  background:rgb(78, 74, 74);
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  padding: 10px;
-}
-.rbc-day-bg {
-  background: #f8f9fa;
-}
-
-.rbc-today {
-  background: #FACC15 !important;
-  border-radius: 5px;
+/* ======================== Navigation ======================== */
+.custom-calendar-header {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
 }
 
-.rbc-event {
-  background: #FACC15 !important;
-  color: white !important;
-  border-radius: 5px;
-  padding: 2px;
-  font-size: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100px;
-  margin: 0 auto;
-  transition: background-color 0.3s ease;
-}
-
-.rbc-event:hover {
-  background: #FACC15 !important;
-}
-
-/* Buttons */
-.add-event-button {
-  display: block;       
-  margin: 20px auto 20px;  
-  width: 200px;
-  background-color: #F97316;
-  color: white;
-  font-size: 1.2rem;
-  padding: 10px 20px;
+.nav-button {
+  background-color: var(--color-accent);
+  color: var(--color-white);
   border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
   cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  text-align: center;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-light);
+}
+
+.nav-button:hover {
+  background-color: var(--color-accent-dark);
+  transform: translateY(-2px);
+}
+
+.current-month {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+/* ======================== Add Event Button ======================== */
+.add-event-button {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  display: block;
+  margin: var(--spacing-xl) auto;
+  box-shadow: var(--shadow-light);
 }
 
 .add-event-button:hover {
-  background-color: #a38408;
-  transform: scale(1.05);
+  background-color: var(--color-accent-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
 }
 
-.back-button {
-  width: 50px;
-  background-color: #464946;
-  color: white;
-  padding: 10px 20px;
-  font-size: 12px;
+/* ======================== Calendar ======================== */
+.rbc-calendar {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+  overflow: hidden;
+  width: 100%;
+}
+
+.rbc-header {
+  background-color: var(--color-gray-light);
+  font-weight: 600;
+  text-align: center;
+  padding: var(--spacing-sm) 0;
+  color: var(--color-primary-dark);
+  border-bottom: 1px solid var(--color-gray);
+}
+
+.rbc-row-bg {
+  background-color: var(--color-gray-lighter);
+}
+
+.rbc-today {
+  background-color: transparent;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.rbc-today::after {
+  content: '';
   position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 10;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 3px;
+  background-color: var(--color-today);
+  border-radius: 2px;
 }
 
-.back-button:hover {
-  background-color: #6c7173;
-  transform: scale(1.05);
+.rbc-button-link {
+  background-color: transparent;
+  border: none;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-weight: 700;
+  color: var(--color-primary-dark);
 }
 
-/* Modal Styles */
+.rbc-button-link:hover {
+  background-color: transparent;
+}
+
+/* ======================== Events List ======================== */
+.events-for-month {
+  margin-top: var(--spacing-xl);
+}
+
+.events-for-month h2 {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-primary);
+}
+
+.event-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.event-item {
+  background-color: var(--color-white);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+  transition: all var(--transition-fast);
+  border-left: 5px solid var(--color-accent);
+}
+
+.event-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.event-title {
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-accent-dark);
+}
+
+.event-description {
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-muted);
+}
+
+.event-time {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.no-events {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+/* ======================== Modal / Event Form ======================== */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: var(--spacing-sm);
 }
 
 .event-form {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
-  width: 500px;
+  background-color: var(--color-white);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius);
+  width: 400px;
   max-width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.event-form:hover {
-  transform: scale(1.02);
+  box-shadow: var(--shadow-heavy);
 }
 
 .event-form h2 {
-  color: #FACC15;
-  font-size: 1.8rem;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
 }
 
 .event-form label {
   display: block;
-  margin-bottom: 10px;
-  text-align: left;
-  font-weight: bold;
-  color: #555;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-dark);
 }
 
 .event-form input,
 .event-form textarea {
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
-  margin-top: 5px;
+  padding: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-gray);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
 }
 
-.event-form input[type="datetime-local"] {
-  font-family: 'Arial', sans-serif;
+.event-form input:focus,
+.event-form textarea:focus {
+  border-color: var(--color-accent);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
 }
 
-.event-form textarea {
-  height: 100px;
-  resize: vertical;
+/* Form buttons */
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-md);
 }
 
-.event-form button {
-  background-color: #FACC15;
-  color: white;
-  padding: 10px 20px;
+.form-buttons button {
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  font-size: 1.2rem;
-  margin-top: 20px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  flex: 1 1 45%;
+  font-weight: 600;
 }
 
-.event-form button:hover {
-  background-color: #FACC15;
-  transform: scale(1.05);
+.form-buttons button[type="submit"] {
+  background-color: var(--color-success);
+  color: var(--color-white);
 }
 
-.event-form button[type="button"] {
-  background-color: #f44336;
-  text-align: center;
-  padding: 10px 20px;
+.form-buttons button[type="button"] {
+  background-color: var(--color-danger);
+  color: var(--color-white);
 }
 
-.event-form button[type="button"]:hover {
-  background-color: #e53935;
-}
-
-@media (max-width: 799px) {
-
-  .event-calendar-container {
-    padding: 20px;
-    width: 100%;
-  }
-
-  .event-calendar-container h1 {
-    margin-left:10px ;
-    font-size: 24px;
-    margin-bottom: 15px;
-  }
-
-  /* Calendar Header */
-  .custom-calendar-header {
-    display: flex;
-    flex-direction: row;
-
+/* ======================== Responsive ======================== */
+@media (max-width: 768px) {
+  .calendar-header {
+    flex-direction: column;
     align-items: flex-start;
-    padding: 10px;
+    gap: var(--spacing-sm);
   }
 
-  .current-month {
-    font-size: 12px;
-    text-align: left;
+  .custom-calendar-header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
   }
 
-  .nav-button {
-    width: 30%;
-    padding: 8px;
-    font-size: 14px;
-    margin: 10px;
-  }
-
-  /* Calendar */
-  .rbc-calendar {
-    height: auto;
-    width: 100%;
-  }
-
-  .rbc-button-link {
-    width: 40px;
-  }
-
-  .rbc-header {
-    font-size: 12px;
-  }
-
-  .rbc-day-bg {
-    background: #f8f9fa; 
-    padding: 5px; 
-    height: 70px; 
-    width: 70px;  
-  }
-
-  .rbc-event {
-    font-size: 10px;
-    padding: 4px;
-  }
-
-  /* Buttons */
   .add-event-button {
-    width: 100%;
-    font-size: 1.1rem;
-    padding: 10px;
-    margin-bottom: 15px;
+    max-width: 100%;
   }
 
-  .back-button {
-    margin: 10px;
-    width: 100px;
-    font-size: 12px;
-    padding: 8px 16px;
-    position: fixed;
-    top: 20px;
-    left: 10px;
-  }
-
-  /* Modal */
-  .modal {
-    padding: 10px;
+  .event-item {
+    padding: var(--spacing-sm);
   }
 
   .event-form {
-    width: 100%;
-    max-width: 100%;
-    padding: 20px;
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .current-month {
+    font-size: var(--font-size-md);
   }
 
-  .event-form input,
-  .event-form textarea {
-    font-size: 0.9rem;
+  .nav-button {
+    padding: 5px 10px;
+    font-size: var(--font-size-sm);
   }
 
-  .event-form button {
-    width: 100%;
-    padding: 12px;
+  .event-title {
+    font-size: var(--font-size-sm);
+  }
+
+  .event-time {
+    font-size: var(--font-size-sm);
   }
 }

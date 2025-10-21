@@ -1,14 +1,40 @@
+// src/features/EventCalendar/EventCalendar.js
 import React, { useState, useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../../features/EventCalendar/EventCalendar.css";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../context/LanguageContext";
+
+// Funksioni për përkthim të teksteve (title, description)
+const translateComment = async (text, targetLang) => {
+  try {
+    const response = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      body: JSON.stringify({
+        q: text,
+        source: "auto",
+        target: targetLang,
+        format: "text"
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    const data = await response.json();
+    return data.translatedText;
+  } catch (error) {
+    console.error("Translation error:", error);
+    return text;
+  }
+};
 
 const localizer = momentLocalizer(moment);
 
 const EventCalendar = () => {
+  const { t, language } = useLanguage();
   const [events, setEvents] = useState([]);
+  const [translatedEvents, setTranslatedEvents] = useState([]);
   const [newEvent, setNewEvent] = useState({
     title: "",
     start: "",
@@ -17,30 +43,44 @@ const EventCalendar = () => {
   });
   const [showForm, setShowForm] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedEventDetails, setSelectedEventDetails] = useState(null);
   const navigate = useNavigate();
 
+  // Fetch events
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await fetch(
-          "http://localhost/kompani-ndertimi/api/calendar.php"
+          "https://hocompany1.com/api/calendar.php"
         );
-        const formattedEvents = await response.json();
-        setEvents(
-          formattedEvents.map((event) => ({
-            title: event.title,
-            start: new Date(event.start),
-            end: new Date(event.end),
-            description: event.description,
-          }))
-        );
+        const data = await response.json();
+        const formattedEvents = data.map((event) => ({
+          title: event.title,
+          start: new Date(event.start),
+          end: new Date(event.end),
+          description: event.description,
+        }));
+        setEvents(formattedEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
     };
     fetchEvents();
   }, []);
+
+  // Përkthimi i eventeve sa herë ndryshon gjuhë ose eventet ndryshojnë
+  useEffect(() => {
+    const translateAll = async () => {
+      const promises = events.map(async (e) => {
+        const translatedTitle = await translateComment(e.title, language);
+        const translatedDescription = await translateComment(e.description, language);
+        return { ...e, title: translatedTitle, description: translatedDescription };
+      });
+      const results = await Promise.all(promises);
+      setTranslatedEvents(results);
+    };
+
+    if (events.length > 0) translateAll();
+  }, [events, language]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +96,7 @@ const EventCalendar = () => {
     };
     try {
       const response = await fetch(
-        "http://localhost/kompani-ndertimi/api/calendar.php",
+        "https://hocompany1.com/api/calendar.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -65,8 +105,8 @@ const EventCalendar = () => {
       );
       const result = await response.json();
       if (result.success) {
-        setEvents([
-          ...events,
+        setEvents((prev) => [
+          ...prev,
           {
             ...newEvent,
             start: new Date(newEvent.start),
@@ -76,7 +116,7 @@ const EventCalendar = () => {
         setNewEvent({ title: "", start: "", end: "", description: "" });
         setShowForm(false);
       } else {
-        alert("Error adding event: " + result.message);
+        alert(t("errorAddingEvent") + ": " + result.message);
       }
     } catch (error) {
       console.error("Error adding event:", error);
@@ -87,14 +127,6 @@ const EventCalendar = () => {
     navigate("/");
   };
 
-  const handleSelectSlot = (slotInfo) => {
-    const selectedDateEvents = events.filter((event) => {
-      return moment(event.start).isSame(slotInfo.start, "day");
-    });
-    setSelectedEventDetails(selectedDateEvents);
-    setCurrentDate(slotInfo.start);
-  };
-
   const goToPreviousMonth = () => {
     setCurrentDate(moment(currentDate).subtract(1, "months").toDate());
   };
@@ -103,37 +135,41 @@ const EventCalendar = () => {
     setCurrentDate(moment(currentDate).add(1, "months").toDate());
   };
 
-  const handleEventClick = (event) => {
-    setSelectedEventDetails(event);
-  };
   const handleNavigate = (newDate) => {
-    setCurrentDate(newDate); 
+    setCurrentDate(newDate);
   };
+
+  const eventsForCurrentMonth = translatedEvents.filter((event) =>
+    moment(event.start).isSame(currentDate, "month")
+  );
+
   return (
     <div className="event-calendar-container">
-      <h1>Event Calendar</h1>
-      <button className="back-button" onClick={handleBackClick}>
-        Back
-      </button>
+      <div className="calendar-header">
+        <h1>📅 {t("eventCalendar")}</h1>
+        <button className="back-button" onClick={handleBackClick}>
+          {t("back")}
+        </button>
+      </div>
 
       <div className="custom-calendar-header">
         <button className="nav-button" onClick={goToPreviousMonth}>
-          &laquo; Prev
+          &laquo; {t("prev")}
         </button>
         <span className="current-month">
           {moment(currentDate).format("MMMM YYYY")}
         </span>
         <button className="nav-button" onClick={goToNextMonth}>
-          Next &raquo;
+          {t("next")} &raquo;
         </button>
       </div>
 
       {showForm && (
         <div className="modal">
           <form className="event-form" onSubmit={handleSubmit}>
-            <h2>Add Event</h2>
+            <h2>{t("addNewEvent")}</h2>
             <label>
-              Event Title
+              {t("eventTitle")}
               <input
                 type="text"
                 name="title"
@@ -142,8 +178,9 @@ const EventCalendar = () => {
                 required
               />
             </label>
+
             <label>
-              Start Time
+              {t("startTime")}
               <input
                 type="datetime-local"
                 name="start"
@@ -152,8 +189,9 @@ const EventCalendar = () => {
                 required
               />
             </label>
+
             <label>
-              End Time
+              {t("endTime")}
               <input
                 type="datetime-local"
                 name="end"
@@ -162,69 +200,76 @@ const EventCalendar = () => {
                 required
               />
             </label>
+
             <label>
-              Event Description
+              {t("description")}
               <textarea
                 name="description"
                 value={newEvent.description}
                 onChange={handleInputChange}
-              ></textarea>
+              />
             </label>
-            <button type="submit">Add Event</button>
-            <button type="button" onClick={() => setShowForm(false)}>
-              Cancel
-            </button>
+
+            <div className="form-buttons">
+              <button type="submit">{t("addEvent")}</button>
+              <button type="button" onClick={() => setShowForm(false)}>
+                {t("cancel")}
+              </button>
+            </div>
           </form>
         </div>
       )}
 
       <Calendar
         localizer={localizer}
-        events={events}
+        events={translatedEvents}
         startAccessor="start"
         endAccessor="end"
         date={currentDate}
         onNavigate={handleNavigate}
-        onSelectSlot={handleSelectSlot}
-        onSelectEvent={handleEventClick}
         toolbar={false}
-        style={{ height: 500, marginTop: "20px" }}
-        selectable={true}
-        views={["month", "week", "day"]}
+        style={{ height: 500, width: "100%" }}
+        selectable={false}
+        views={["month"]}
         defaultView="month"
       />
+
       <button className="add-event-button" onClick={() => setShowForm(true)}>
-        Add Event
+        {t("addEvent")}
       </button>
-      {/* Displaying events for the relevant date*/}
-      {selectedEventDetails && selectedEventDetails.length > 0 && (
-        <div className="events-for-date">
-          <h2>Events on {moment(currentDate).format("MMMM Do YYYY")}</h2>
-          <ul>
-            {selectedEventDetails.map((event, index) => (
-              <li key={index}>
-                <p>
-                  <strong>{event.title}</strong>
-                </p>
-                <p>{event.description}</p>
-                <p>
-                  {moment(event.start).format("h:mm A")} -{" "}
-                  {moment(event.end).format("h:mm A")}
-                </p>
+
+      <div className="events-for-month">
+        <h2>
+          {t("eventsIn")} {moment(currentDate).format("MMMM YYYY")}
+        </h2>
+        {eventsForCurrentMonth.length > 0 ? (
+          <ul className="event-list">
+            {eventsForCurrentMonth.map((event, index) => (
+              <li key={index} className="event-item">
+                <div className="event-title">{event.title}</div>
+                <div className="event-description">{event.description}</div>
+                <div className="event-time">
+                  {moment(event.start).format("MMM Do, h:mm A")} -{" "}
+                  {moment(event.end).format("MMM Do, h:mm A")}
+                </div>
               </li>
             ))}
           </ul>
-        </div>
-      )}
-
-      {/* If there are no events for the date */}
-      {selectedEventDetails && selectedEventDetails.length === 0 && (
-        <div className="no-events">
-          <p>No events for this date.</p>
-        </div>
-      )}
+        ) : (
+          <p className="no-events">{t("noEventsMonth")}</p>
+        )}
+      </div>
     </div>
   );
 };
 
 export default EventCalendar;
+
+
+
+
+
+
+
+
+

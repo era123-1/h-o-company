@@ -1,28 +1,57 @@
-/* Jobs*/
 .search-container {
   display: flex;
   justify-content: flex-end;
-  margin: 30px;
+  margin: 30px 50px;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
 }
 
 .search-input {
-  max-width: 50%;
-  padding: 12px 15px;
-  border: 1px solid #ccc;
-  border-radius: 25px;
+  width: 100%;
+  padding: 14px 50px 14px 20px;
+  border: 1px solid #ddd;
+  border-radius: 50px;
   font-size: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: #999;
+  font-weight: 500;
 }
 
 .search-input:focus {
-  border-color: #1f2902;
-  box-shadow: 0 4px 15px rgba(31, 41, 2, 0.3);
+  border-color: #FACC15;
+  box-shadow: 0 6px 20px rgba(250, 204, 21, 0.25);
   outline: none;
 }
+
+.search-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #706f6f;
+}
+
 h2 {
   text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  position: relative;
 }
+
 .job-listings {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -46,6 +75,11 @@ h2 {
 .job-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.job-card h3 {
+  font-size: 1.1rem;
+  text-align: start;
 }
 
 .button-container {
@@ -72,6 +106,7 @@ h2 {
 .apply-button:hover {
   background-color: #facc15;
 }
+
 .status.pending {
   color: #3f6212;
 }
@@ -79,31 +114,27 @@ h2 {
 .status.closed {
   color: #d9534f;
 }
+
 @media (min-width: 175px) and (max-width: 799px) {
- 
+
   /*Jobs Section*/
   .search-container {
-    margin: 20px auto;
-    display: flex;
     justify-content: center;
-    width: 100%;
+    margin: 20px;
   }
 
-  /* Search Input */
-  .search-input {
+  .search-wrapper {
     max-width: 90%;
-    padding: 15px 20px;
-    border: 1px solid #ccc;
-    border-radius: 30px;
-    font-size: 1.2rem;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
   }
 
-  .search-input:focus {
-    border-color: #867a06;
-    box-shadow: 0 4px 20px rgba(134, 122, 6, 0.4);
-    outline: none;
+  .search-input {
+    font-size: 0.95rem;
+    padding: 12px 45px 12px 18px;
+  }
+
+  .search-icon svg {
+    width: 18px;
+    height: 18px;
   }
 
   .job-listings {
@@ -115,7 +146,12 @@ h2 {
     padding: 15px;
   }
 
+  .job-card h3 {
+    font-size: 0.9rem;
+  }
+
   h2 {
     font-size: 1.4rem;
   }
+
 }

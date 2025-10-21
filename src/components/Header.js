@@ -1,38 +1,92 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/images/logo.png";
-import '../styles/Header.css';
-
-const Header = () => {
+import "../styles/Header.css";
+import { useLanguage } from "../context/LanguageContext";
+import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
+import { AuthContext } from "../context/AuthContext";
+import { getFirebaseToken, onForegroundMessage, saveNotificationToFirestore } from "../firebase";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { NotificationDropdown } from "../components/NotificationDropdown";
+import { ChevronDown, Moon, Sun } from "lucide-react";
+import { useTheme } from "../context/theme";
+const HeaderContent = () => {
+  const { t } = useLanguage();
+  const { user, login, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("");
-  const [dropdowns, setDropdowns] = useState({
-    home: false,
-    projects: false,
-  });
+  const [openMenu, setOpenMenu] = useState(null);
+  const [dropdowns, setDropdowns] = useState({ home: false, projects: false });
+  const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
-
-  const handleLinkClick = (linkName) => {
-    setActiveLink(linkName);
-    setMenuOpen(false);
-    setDropdowns({ home: false, projects: false });
-  };
-
   const toggleDropdown = (dropdownName) => {
-    if (window.innerWidth <= 1024) { 
-      setDropdowns(prev => ({
-        ...prev,
-        [dropdownName]: !prev[dropdownName],
-      }));
+    if (window.innerWidth <= 1024) {
+      setDropdowns((prev) => ({ ...prev, [dropdownName]: !prev[dropdownName] }));
     }
   };
 
+  const isActive = (path) => (location.pathname === path ? "active" : "");
+
+  // Google login popup
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+        });
+        const profile = await res.json();
+        login({
+          name: profile.name,
+          email: profile.email,
+          imageUrl: profile.picture,
+        });
+        localStorage.setItem("userEmail", profile.email);
+      } catch (err) {
+        console.error("Error fetching user info:", err);
+      }
+    },
+    onError: () => console.log("Google Login Failed"),
+  });
+  useEffect(() => {
+    const setupMessaging = async () => {
+      await getFirebaseToken();
+
+      // Kur vjen mesazh në foreground
+      onForegroundMessage(async (payload) => {
+        const { title, body } = payload.notification || {};
+        if (title && body) {
+          toast.info(
+            <div>
+              <strong>{title}</strong>
+              <p>{body}</p>
+            </div>,
+            { autoClose: 5000 }
+          );
+          await saveNotificationToFirestore(payload);
+        }
+      });
+    };
+
+    setupMessaging();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".profile-menu-container") &&
+        !event.target.closest(".notification-wrapper")) {
+        setOpenMenu(null);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
   return (
     <header className="header">
       {/* Logo */}
       <div className="logo">
-        <img src={logo} alt="Logo" />
+        <img src={logo} alt="Logo" loading="lazy" />
       </div>
 
       {/* Hamburger */}
@@ -46,58 +100,106 @@ const Header = () => {
       <ul className={`menu ${menuOpen ? "open" : ""}`}>
         {/* Home Dropdown */}
         <li className={`has-dropdown ${dropdowns.home ? "open" : ""}`}>
-          <span
-            className={activeLink === "Home" ? "active" : ""}
-            onClick={() => toggleDropdown("home")}
-          >
-            Home <span className={`arrow ${dropdowns.home ? "down" : "up"}`}>^</span>
+          <span onClick={() => toggleDropdown("home")}>
+            {t("home")}{" "}
+            <ChevronDown
+              size={20}
+              className="arrow-icon"
+              style={{ transform: dropdowns.home ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
+            />
           </span>
+
           <ul className="dropdown">
-            <li>
-              <Link to="/" onClick={() => handleLinkClick("HomePage")}>Main Home</Link>
-            </li>
-             <li>
-              <Link to="/features" onClick={() => handleLinkClick("Features")}>Features</Link>
-            </li>
-            <li>
-              <Link to="/dashboard" onClick={() => handleLinkClick("Dashboard")}>Dashboard</Link>
-            </li>
+            <li><Link to="/" className={isActive("/")}>{t("mainHome")}</Link></li>
+            <li><Link to="/features" className={isActive("/features")}>{t("features")}</Link></li>
+            <li><Link to="/dashboard" className={isActive("/dashboard")}>{t("dashboard")}</Link></li>
           </ul>
         </li>
 
         {/* Projects Dropdown */}
         <li className={`has-dropdown ${dropdowns.projects ? "open" : ""}`}>
-          <span
-            className={activeLink === "Projects" ? "active" : ""}
-            onClick={() => toggleDropdown("projects")}
-          >
-            Projects <span className={`arrow ${dropdowns.projects ? "down" : "up"}`}>^</span>
+          <span onClick={() => toggleDropdown("projects")}>
+            {t("projects")}{" "}
+            <ChevronDown
+              size={20}
+              className="arrow-icon"
+              style={{ transform: dropdowns.projects ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
+            />
           </span>
           <ul className="dropdown">
-            <li>
-              <Link to="/projects" onClick={() => handleLinkClick("ProjectsPage")}>Projects</Link>
-            </li>
-            <li>
-              <Link to="/buildcostpro" onClick={() => handleLinkClick("BuildCostPro")}>BuildCostPro</Link>
-            </li>
-            <li>
-              <Link to="/materials" onClick={() => handleLinkClick("Materials")}>Materials</Link>
-            </li>
-            <li>
-              <Link to="/calendar" onClick={() => handleLinkClick("Calendar")}>Calendar</Link>
-            </li>
+            <li><Link to="/projects" className={isActive("/projects")}>{t("projects")}</Link></li>
+            <li><Link to="/buildcostpro" className={isActive("/buildcostpro")}>{t("buildCostPro")}</Link></li>
+            <li><Link to="/materials" className={isActive("/materials")}>{t("materials")}</Link></li>
+            <li><Link to="/calendar" className={isActive("/calendar")}>{t("calendar")}</Link></li>
           </ul>
         </li>
 
         {/* Other Links */}
-        <li><Link to="/about" onClick={() => handleLinkClick("About")}>About</Link></li>
-        <li><Link to="/jobs" onClick={() => handleLinkClick("Jobs")}>Jobs</Link></li>
-        <li><Link to="/reviews" onClick={() => handleLinkClick("Reviews")}>Reviews</Link></li>
-        <li><Link to="/contact" onClick={() => handleLinkClick("Contact")}>Contact</Link></li>
-       
+        <li><Link to="/about" className={isActive("/about")}>{t("about")}</Link></li>
+        <li><Link to="/jobs" className={isActive("/jobs")}>{t("jobs")}</Link></li>
+        <li><Link to="/reviews" className={isActive("/reviews")}>{t("reviews")}</Link></li>
+        <li><Link to="/contact" className={isActive("/contact")}>{t("contact")}</Link></li>
+        {/* Ikonat: Notifications, Theme Toggle, Profile */}
+
+        <li className="icon-item">
+          <NotificationDropdown
+            isOpen={openMenu === "notifications"}
+            setOpenMenu={setOpenMenu}
+            closeProfileMenu={() => setOpenMenu(null)}
+          />
+          <ToastContainer />
+          <div className="theme-toggle" onClick={toggleTheme}>
+            {theme === "dark" ? (
+              <Sun size={22} color="#ffffff" className="theme-icon sun" />
+            ) : (
+              <Moon size={22} color="#ffffff" className="theme-icon moon" />
+            )}
+          </div>
+
+          {user ? (
+            <div className="profile-menu-container">
+              <img
+                src={user.imageUrl}
+                alt={t("User")}
+                className="header-user-img"
+                onClick={() =>
+                  setOpenMenu(openMenu === "profile" ? null : "profile")
+                }
+              />
+              {openMenu === "profile" && (
+                <div className="menu-dropdown">
+                  <p className="menu-item username">{user.name}</p>
+                  <p className="menu-item logout" onClick={logout}>
+                    {t("logout")}
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <span onClick={() => googleLogin()} className="signin-btn">
+              {t("SigIn")}
+            </span>
+          )}
+        </li>
+
       </ul>
     </header>
   );
 };
 
-export default Header;
+export default function Header() {
+  return (
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+      <HeaderContent />
+    </GoogleOAuthProvider>
+  );
+}
+
+
+
+
+
+
+
+
+

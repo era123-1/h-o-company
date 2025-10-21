@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import "../styles/CookieConsent.css";
+import { useLanguage } from "../context/LanguageContext";
 
 const CookieConsent = () => {
+  const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [cookiesPreferences, setCookiesPreferences] = useState({
     essential: true,
     analytics: false,
     marketing: false,
   });
-
 
   useEffect(() => {
     const consent = Cookies.get("cookieConsent");
@@ -23,7 +24,7 @@ const CookieConsent = () => {
     }
   }, []);
 
-  // Function
+  // Funksionet për ruajtje
   const handleAcceptAll = () => {
     Cookies.set("cookieConsent", "true", { expires: 365 });
     Cookies.set(
@@ -46,7 +47,6 @@ const CookieConsent = () => {
     setIsVisible(false);
   };
 
-  // Cookies
   const handlePreferenceChange = (e) => {
     const { name, checked } = e.target;
     setCookiesPreferences((prevState) => ({
@@ -55,16 +55,11 @@ const CookieConsent = () => {
     }));
   };
 
-  if (!isVisible) {
-    return null;
-  }
+  if (!isVisible) return null;
 
   return (
     <div className="cookie-banner">
-      <p>
-        We use cookies to improve your experience. Please choose your
-        preferences:
-      </p>
+      <p>{t("cookieBannerMessage")}</p>
       <div className="cookie-options">
         <div>
           <input
@@ -73,7 +68,7 @@ const CookieConsent = () => {
             checked={cookiesPreferences.essential}
             disabled
           />
-          <label>Essential Cookies (Required)</label>
+          <label>{t("essentialCookies")}</label>
         </div>
         <div>
           <input
@@ -82,7 +77,7 @@ const CookieConsent = () => {
             checked={cookiesPreferences.analytics}
             onChange={handlePreferenceChange}
           />
-          <label>Analytics Cookies</label>
+          <label>{t("analyticsCookies")}</label>
         </div>
         <div>
           <input
@@ -91,12 +86,12 @@ const CookieConsent = () => {
             checked={cookiesPreferences.marketing}
             onChange={handlePreferenceChange}
           />
-          <label>Marketing Cookies</label>
+          <label>{t("marketingCookies")}</label>
         </div>
       </div>
       <div className="cookie-banner-button">
-        <button onClick={handleSavePreferences}>Save Preferences</button>
-        <button onClick={handleAcceptAll}>Accept All</button> 
+        <button onClick={handleSavePreferences}>{t("savePreferences")}</button>
+        <button onClick={handleAcceptAll}>{t("acceptAll")}</button>
       </div>
     </div>
   );

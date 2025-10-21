@@ -4,27 +4,23 @@ import Select from "react-select";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import "../../styles/BuildCostPro.css";
+import { useLanguage } from "../../context/LanguageContext";
+import { objectTypes } from "../../utils/Data";
 import BuildCostImage from "../../assets/images/buildcostimage.png";
 
-const objectTypes = [
-  { id: 1, type: "Residential", qualityPrices: { first: 100, second: 90, third: 80 }, workerCost: 20, transportCost: 10, discount: 5, tax: 18 },
-  { id: 2, type: "House", qualityPrices: { first: 120, second: 110, third: 100 }, workerCost: 25, transportCost: 12, discount: 7, tax: 20 },
-  { id: 3, type: "Commercial", qualityPrices: { first: 150, second: 140, third: 130 }, workerCost: 30, transportCost: 15, discount: 10, tax: 22 },
-  { id: 4, type: "Industrial", qualityPrices: { first: 200, second: 180, third: 170 }, workerCost: 35, transportCost: 20, discount: 12, tax: 25 },
-];
-
 const BuildCostPro = () => {
+  const { t } = useLanguage();
   const [objectType, setObjectType] = useState("");
   const [area, setArea] = useState("");
   const [selectedQuality, setSelectedQuality] = useState("first");
   const navigate = useNavigate();
 
-  // Options për react-select
+  // Options for react-select
   const objectOptions = objectTypes.map(obj => ({ value: obj.type, label: obj.type }));
   const qualityOptions = [
-    { value: "first", label: "First Quality" },
-    { value: "second", label: "Second Quality" },
-    { value: "third", label: "Third Quality" },
+    { value: "first", label: t("firstQuality") },
+    { value: "second", label: t("secondQuality") },
+    { value: "third", label: t("thirdQuality") },
   ];
 
   const selectedObject = objectTypes.find(obj => obj.type === objectType);
@@ -44,7 +40,7 @@ const BuildCostPro = () => {
 
   const handlePurchase = () => {
     if (!localStorage.getItem("user")) {
-      alert("You need to be logged in to make a purchase.");
+      alert(t("loginRequired"));
       navigate("/reviews");
       return;
     }
@@ -60,23 +56,23 @@ const BuildCostPro = () => {
       <main className="container-section">
         <section className="intro-section" aria-labelledby="intro-title">
           <div className="intro-tagline">
-            <h2 id="intro-title">🏗️ Plan smarter, build better.</h2>
-            <p>Estimate your construction costs in seconds – transparent, easy, and reliable.</p>
+            <h2 id="intro-title">{t("introTitle")}</h2>
+            <p>{t("introText")}</p>
           </div>
 
           <div className="fact-card">
             <div className="fact-box">
-              <h4>💡 Did you know?</h4>
-              <p>On average, construction costs can vary up to <strong>30%</strong> depending on quality and location.</p>
+              <h4>{t("factTitle")}</h4>
+              <p>{t("factText")}</p>
             </div>
 
             <div className="card">
-              <h3>Welcome to BuildCostPro</h3>
+              <h3>{t("welcome")}</h3>
               <ul>
-                <li><strong>Step 1:</strong> Choose the object type.</li>
-                <li><strong>Step 2:</strong> Enter the area.</li>
-                <li><strong>Step 3:</strong> Select the quality and review auto-filled costs.</li>
-                <li><strong>Step 4:</strong> Calculate the total cost.</li>
+                <li>{t("step1")}</li>
+                <li>{t("step2")}</li>
+                <li>{t("step3")}</li>
+                <li>{t("step4")}</li>
               </ul>
             </div>
           </div>
@@ -88,7 +84,7 @@ const BuildCostPro = () => {
           <h2 id="calc-title" className="title">BuildCostPro</h2>
 
           <div className="formGroup">
-            <label className="label">Object Type:</label>
+            <label className="label">{t("objectType")}:</label>
             <Select
               value={objectOptions.find(opt => opt.value === objectType)}
               onChange={option => setObjectType(option.value)}
@@ -103,20 +99,20 @@ const BuildCostPro = () => {
           </div>
 
           <div className="formGroup">
-            <label htmlFor="area" className="label">Area (m²):</label>
+            <label htmlFor="area" className="label">{t("area")}:</label>
             <input
               type="number"
               id="area"
               className="input"
               value={area}
               onChange={e => setArea(e.target.value)}
-              placeholder="Enter total area"
+              placeholder={t("enterArea")}
               min="0"
             />
           </div>
 
           <div className="formGroup">
-            <label className="label">Quality:</label>
+            <label className="label">{t("quality")}:</label>
             <Select
               value={qualityOptions.find(opt => opt.value === selectedQuality)}
               onChange={option => setSelectedQuality(option.value)}
@@ -125,44 +121,43 @@ const BuildCostPro = () => {
               menuPortalTarget={document.body}
               styles={{
                 menuPortal: base => ({ ...base, zIndex: 9999 }),
-                control: base => ({ ...base, borderRadius: 8, borderColor: "#e6e7ea",  background: "#f5f5f5", }),
-      
+                control: base => ({ ...base, borderRadius: 8, borderColor: "#e6e7ea", background: "#f5f5f5" }),
               }}
             />
           </div>
 
           <div className="grid-2">
             <div className="formGroup small">
-              <label>Price / m² (€):</label>
+              <label>{t("pricePerM2")}:</label>
               <input type="number" className="input" value={selectedPrice} readOnly />
             </div>
             <div className="formGroup small">
-              <label>Worker / m² (€):</label>
+              <label>{t("workerPerM2")}:</label>
               <input type="number" className="input" value={selectedObject?.workerCost || 0} readOnly />
             </div>
           </div>
 
           <div className="grid-2">
             <div className="formGroup small">
-              <label>Transport / m² (€):</label>
+              <label>{t("transportPerM2")}:</label>
               <input type="number" className="input" value={selectedObject?.transportCost || 0} readOnly />
             </div>
             <div className="formGroup small">
-              <label>Discount (%):</label>
+              <label>{t("discount")}:</label>
               <input type="number" className="input" value={discount} readOnly />
             </div>
           </div>
 
           <div className="formGroup">
-            <label>Tax (%):</label>
+            <label>{t("tax")}:</label>
             <input type="number" className="input" value={tax} readOnly />
           </div>
 
           {totalCost !== null && (
             <div className="result">
-              <h3>Total Estimated Cost</h3>
+              <h3>{t("totalCost")}</h3>
               <p className="big">€{totalCost.toFixed(2)}</p>
-              <button onClick={handlePurchase} className="button primary">Buy Project</button>
+              <button onClick={handlePurchase} className="button primary">{t("buyProject")}</button>
             </div>
           )}
         </aside>

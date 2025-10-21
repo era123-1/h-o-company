@@ -12,7 +12,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Create the events table if it does not exist
 $tableCreationQuery = "
     CREATE TABLE IF NOT EXISTS events (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,7 +28,6 @@ if ($conn->query($tableCreationQuery) === false) {
     exit();
 }
 
-// Handle GET request to fetch events
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $sql = "SELECT * FROM events ORDER BY start ASC";
     $result = $conn->query($sql);

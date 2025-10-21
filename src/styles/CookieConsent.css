@@ -1,13 +1,12 @@
 /* Cookie Consent  */
- .cookie-banner {
+.cookie-banner {
   position: fixed;
   bottom: 24px;
   left: 0;
   right: 0;
-  margin: 0 auto;       
-  width: 92%;
-  max-width: 860px;
-  background: #1f2937; 
+  margin: 0 auto;
+  width: 100%;
+  background: #1f2937;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   color: #f9fafb;
@@ -28,6 +27,7 @@
   color: #e5e7eb;
   font-weight: 400;
 }
+
 .cookie-options {
   display: flex;
   flex-direction: column;
@@ -80,8 +80,8 @@
 
 .cookie-banner-button {
   display: flex;
-  justify-content: center; 
-  gap: 16px;
+  justify-content: center;
+  gap: 20px;
 }
 
 .cookie-banner-button button {
@@ -91,9 +91,10 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  min-width: 150px;
+  min-width: 200px;
   border: none;
 }
+
 .cookie-banner-button button:first-child {
   background-color: transparent;
   border: 2px solid #facc15;
@@ -126,6 +127,7 @@
   color: #374151;
   box-shadow: none;
 }
+
 @media (max-width: 768px) {
   .cookie-banner {
     bottom: 12px;
@@ -134,20 +136,18 @@
   }
 
   .cookie-banner-button {
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-  }
-
-  .cookie-banner-button button {
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
   }
 }
+
 @keyframes slideUp {
   from {
     opacity: 0;
     transform: translateX(-50%) translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(-50%) translateY(0);

@@ -1,20 +1,17 @@
-import { useState, useEffect } from "react";
+//src/hooks/useAuth.js
+
+import { useState } from "react";
 
 export const useAuth = () => {
-  const [user, setUser] = useState(null);
-  const [hasRated, setHasRated] = useState(false);
-
-  useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    const hasUserRated = localStorage.getItem("hasRated") === "true";
-    if (savedUser) setUser(savedUser);
-    setHasRated(hasUserRated);
-  }, []);
+  const savedUser = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(savedUser || null);
+  const [hasRated, setHasRated] = useState(localStorage.getItem("hasRated") === "true");
 
   const login = (userData) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("hasRated", false);
+    setHasRated(false);
   };
 
   const logout = () => {

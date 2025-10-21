@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../../styles/Dashboard.css";
-import { AuthContext } from "../../context/AuthContext"; 
+import { AuthContext } from "../../context/AuthContext";
 
 const Dashboard = () => {
-  const { user } = useContext(AuthContext); 
+  const { user } = useContext(AuthContext);
   const [applications, setApplications] = useState([]);
   const [users, setUsers] = useState(0);
   const [ratings, setRatings] = useState([]);
@@ -15,10 +15,9 @@ const Dashboard = () => {
     }
   }, [user]);
 
-  // Fetch applications for jobs
   useEffect(() => {
     if (isAdmin) {
-      fetch("http://localhost/kompani-ndertimi/api/get-application.php")
+      fetch("https://hocompany1.com/api/get-application.php")
         .then((response) => response.json())
         .then((data) => {
           if (data.applications) {
@@ -32,7 +31,7 @@ const Dashboard = () => {
   // Fetch registered users
   useEffect(() => {
     if (isAdmin) {
-      fetch("http://localhost/kompani-ndertimi/api/registeredUser.php")
+      fetch("https://hocompany1.com/api/registeredUser.php")
         .then((response) => response.json())
         .then((data) => {
           if (data.total) {
@@ -46,7 +45,7 @@ const Dashboard = () => {
   // Fetch ratings and comments
   useEffect(() => {
     if (isAdmin) {
-      fetch("https://hocompany.website/api/ratingsPage.php")
+      fetch("https://hocompany1.com/api/ratingsPage.php")
         .then((response) => response.json())
         .then((data) => {
           if (data.ratings) {
@@ -60,7 +59,7 @@ const Dashboard = () => {
   // Fetch page visitors
   useEffect(() => {
     if (isAdmin) {
-      fetch("http://localhost/kompani-ndertimi/api/pageVisit.php")
+      fetch("https://hocompany1.com/api/pageVisit.php")
         .then((response) => response.json())
         .then((data) => {
           if (data.visitors) {

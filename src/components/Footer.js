@@ -1,8 +1,11 @@
 import React from "react";
 import logo from "../assets/images/logo.png";
 import "../styles/Footer.css";
+import { useLanguage } from "../context/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="footer">
       <div className="footer-content">
@@ -21,56 +24,53 @@ const Footer = () => {
             <ul>
               <li>
                 <a href="/">
-                  <i className="fas fa-home"></i> HOME
+                  <i className="fas fa-home"></i> {t("home")}
                 </a>
               </li>
               <li>
                 <a href="/projects">
-                  <i className="fas fa-info-circle"></i> Projects
+                  <i className="fas fa-info-circle"></i> {t("projects")}
                 </a>
               </li>
               <li>
                 <a href="/jobs">
-                  <i className="fas fa-briefcase"></i> Jobs
+                  <i className="fas fa-briefcase"></i> {t("jobs")}
                 </a>
               </li>
               <li>
                 <a href="/about">
-                  <i className="fas fa-question-circle"></i> About
+                  <i className="fas fa-question-circle"></i> {t("about")}
                 </a>
               </li>
               <li>
                 <a href="/contact">
-                  <i className="fas fa-envelope"></i> Contact
+                  <i className="fas fa-envelope"></i> {t("contact")}
                 </a>
               </li>
             </ul>
           </nav>
         </div>
 
-        {/*  Contact Info */}
+        {/* Contact Info */}
         <div className="footer-column">
           <div id="details">
-            <h4>Contacts</h4>
+            <h4>{t("contacts")}</h4>
             <p>
-              <i className="fas fa-map-marker-alt"></i>
-              Kajo Karafili Street, BimBashi Building, Floor 4, Tirana, Albania
+              <i className="fas fa-map-marker-alt"></i> {t("address")}
             </p>
             <p>
-              <i className="fas fa-phone"></i>
-              +355 69 20 73 347
+              <i className="fas fa-phone"></i> {t("phone")}
             </p>
             <p>
-              <i className="fas fa-envelope"></i>
-              erahidaj@gmail.com
+              <i className="fas fa-envelope"></i> {t("email")}
             </p>
           </div>
         </div>
 
         {/* Location Map */}
         <div className="footer-column">
-          <h4>LOCATION</h4>
-          <p>Floor 4, Tirana, Albania</p>
+          <h4>{t("location")}</h4>
+          <p>{t("locationText")}</p>
           <div className="map-container">
             <iframe
               src="https://www.google.com/maps/embed?pb=..."
@@ -85,9 +85,9 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Footer */}
+      {/* Footer Bottom */}
       <div className="footer-bottom">
-        <p>All Rights Reserved by "H&O"</p>
+        <p>{t("rightsReserved")}</p>
       </div>
     </footer>
   );

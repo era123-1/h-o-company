@@ -6,11 +6,13 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   margin: 0;
   padding: 0;
   font-family: 'Poppins', Arial, sans-serif;
-  background-color: #f2f2f2;
-  overflow-x: hidden; 
+  background-color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
